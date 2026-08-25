@@ -9,10 +9,10 @@ design:
   # Verilog/SystemVerilog sources related to pure synthesisable rtl
   rtl:
     files:
-      - "rs_det.sv"
-      - "i2c_slave_if.sv"
-      - "i2c_slave_core.sv"
-      - "i2c_slave.sv"
+      - "src/rs_det.sv"
+      - "src/i2c_slave_if.sv"
+      - "src/i2c_slave_core.sv"
+      - "src/i2c_slave.sv"
 
   # Additional SystemVerilog sources for verification
   verif:
@@ -21,21 +21,21 @@ design:
 
       # I2C Agent
       - !include
-        file: "../verif/src/uvm_agents/i2c_agent/i2c_agent.yaml"
+        file: "references/open-chip-flow/verif/src/uvm_agents/i2c_agent/i2c_agent.yaml"
         path: "design/verif/files"
 
       # Clock Agent
       - !include
-        file: "../verif/src/uvm_agents/clk_agent/clk_agent.yaml"
+        file: "references/open-chip-flow/verif/src/uvm_agents/clk_agent/clk_agent.yaml"
         path: "design/verif/files"
 
       # Reset Agent
       - !include
-        file: "../verif/src/uvm_agents/rst_agent/rst_agent.yaml"
+        file: "references/open-chip-flow/verif/src/uvm_agents/rst_agent/rst_agent.yaml"
         path: "design/verif/files"
 
       # OCF report server
-      - "../verif/src/ocf_uvm_pkg.sv"
+      - "references/open-chip-flow/verif/src/ocf_uvm_pkg.sv"
 
       # UVM test environment
       - "verif/env/i2c_slave_env_pkg.sv"
@@ -48,4 +48,4 @@ design:
       - "verif/env/"
       - "verif/sequences/"
       - "verif/tests/"
-      - "../verif/src"
+      - "verif/src"
