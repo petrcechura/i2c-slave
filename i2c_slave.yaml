@@ -1,0 +1,51 @@
+
+
+
+# 
+design:
+  name: "i2c_slave"
+  version: "0.1"
+
+  # Verilog/SystemVerilog sources related to pure synthesisable rtl
+  rtl:
+    files:
+      - "rs_det.sv"
+      - "i2c_slave_if.sv"
+      - "i2c_slave_core.sv"
+      - "i2c_slave.sv"
+
+  # Additional SystemVerilog sources for verification
+  verif:
+    top_module: i2c_slave_tb
+    files:
+
+      # I2C Agent
+      - !include
+        file: "../verif/src/uvm_agents/i2c_agent/i2c_agent.yaml"
+        path: "design/verif/files"
+
+      # Clock Agent
+      - !include
+        file: "../verif/src/uvm_agents/clk_agent/clk_agent.yaml"
+        path: "design/verif/files"
+
+      # Reset Agent
+      - !include
+        file: "../verif/src/uvm_agents/rst_agent/rst_agent.yaml"
+        path: "design/verif/files"
+
+      # OCF report server
+      - "../verif/src/ocf_uvm_pkg.sv"
+
+      # UVM test environment
+      - "verif/env/i2c_slave_env_pkg.sv"
+      - "verif/sequences/i2c_slave_seq_pkg.sv"
+      - "verif/tests/i2c_slave_test_pkg.sv"
+      - "verif/tb/i2c_slave_tb.sv"
+
+    includes:
+      - "verif/"
+      - "verif/env/"
+      - "verif/sequences/"
+      - "verif/tests/"
+      - "../verif/src"
