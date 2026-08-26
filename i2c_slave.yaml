@@ -10,9 +10,12 @@ design:
   rtl:
     files:
       - "src/rs_det.sv"
+      - "src/wb_if.sv"
+      - "src/wb_master.sv"
       - "src/i2c_slave_if.sv"
       - "src/i2c_slave_core.sv"
       - "src/i2c_slave.sv"
+      - "src/i2cwb_bridge.sv"
 
   # Additional SystemVerilog sources for verification
   verif:
@@ -41,6 +44,7 @@ design:
       - "verif/env/i2c_slave_env_pkg.sv"
       - "verif/sequences/i2c_slave_seq_pkg.sv"
       - "verif/tests/i2c_slave_test_pkg.sv"
+      - "verif/tb/reg_bank.sv"
       - "verif/tb/i2c_slave_tb.sv"
 
     includes:

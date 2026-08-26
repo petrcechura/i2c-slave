@@ -24,7 +24,7 @@ module i2c_slave_core
     output wire scl_t,
 `endif
 
-    /** When high during ACK/NACK process, subsequent transmittion is core sending
+    /** When high during ACK/NACK process, subsequent transmission is core sending
      *  contents from `data_in` vector. TX is immediately aborted when this signal
      *  goes low during the transmit. */
     input  logic tx_enable,
@@ -145,7 +145,6 @@ module i2c_slave_core
         sda_t = 1'b0;
         rx_done = 1'b0;
         tx_done = 1'b0;
-        ack_out = 1'b1;
 
         case (state_q)
             IDLE: begin

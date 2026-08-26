@@ -28,29 +28,46 @@ module i2c_slave_tb;
     assign i2c_ifc.scl_i = scl_i[1];
     assign scl_o[1] = i2c_ifc.scl_o;
 `endif
-    assign i2c_slave_ifc.clk = clk_ifc.clk;
-    assign i2c_slave_ifc.rst_n = rst_ifc.rst;
     assign i2c_ifc.clk = clk_ifc.clk[i2c_slave_env_pkg::CLK_I2C_SLAVE];
     assign i2c_ifc.rst = rst_ifc.rst[i2c_slave_env_pkg::RST_I2C_SLAVE];
+`ifndef USING_VERILATOR
+    assign i2c_slave_ifc.sda = i2c_slave_core_ifc.sda;
+    assign i2c_slave_ifc.scl = i2c_slave_core_ifc.scl;
+`else
+    assign sda_t[0] = i2c_slave_ifc.sda_t;
+    assign i2c_slave_ifc.sda_i = sda_i[0];
+    assign sda_o[0] = i2c_slave_ifc.sda_o;
+    assign scl_t[0] = i2c_slave_ifc.scl_t;
+    assign i2c_slave_ifc.scl_i = scl_i[0];
+    assign scl_o[0] = i2c_slave_ifc.scl_o;
+`endif
 
     // I2C slave instance
     // -----------------------
-    i2c_slave#(.SLAVE_ADDR(7'b0000110),
-               .REG_COUNT(4)) dut
+    i2c_slave dut
     (
-        .clk(   i2c_slave_ifc.clk),
-        .arst(  i2c_slave_ifc.rst_n),
-`ifndef USING_VERILATOR
-        .sda(   i2c_slave_ifc.sda),
-        .scl(   i2c_slave_ifc.scl)
-`else
-        .sda_t(sda_t[0]),
-        .sda_o(sda_o[0]),
-        .sda_i(sda_i[0]),
-        .scl_t(scl_t[0]),
-        .scl_o(scl_o[0]),
-        .scl_i(scl_i[0])
-`endif
+        .slave_addr(7'b0000110),
+        .clk(   clk_ifc.clk),
+        .arst(  rst_ifc.rst),
+        .i2c_slave_ifc(i2c_slave_ifc),
+        .reg_select(rbank_select),
+        .reg_val_in(rbank_val_out),
+        .reg_val_out(rbank_val_in),
+        .reg_val_valid(rbank_we)
+    );
+    
+    logic[7:0] rbank_select;    
+    logic[7:0] rbank_val_in;
+    logic[7:0] rbank_val_out;
+    logic      rbank_we;
+    reg_bank reg_bank_i
+    (
+        .clk( clk_ifc.clk),
+        .arst(rst_ifc.rst),
+        .reg_select(rbank_select),
+        .reg_val_in(rbank_val_in),
+        .reg_val_out(rbank_val_out),
+        .reg_we(rbank_we)
     );
 
 `ifdef USING_VERILATOR

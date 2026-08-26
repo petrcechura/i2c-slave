@@ -3,9 +3,6 @@
 
 interface i2c_slave_if;
 
-    logic clk;
-    logic rst_n;
-
 `ifndef USING_VERILATOR
     wire sda;
     wire scl;
