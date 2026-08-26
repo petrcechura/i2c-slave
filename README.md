@@ -1,22 +1,19 @@
 # i2c-slave
 This repository holds simple implementation of 7bit I2C slave.
 
+> [!WARNING]
+> This repository is under development and this README now serves for notes rather than for description.
+
 ## Specification
-| No.   | Requirement |
-| :---- |:------------|
-| 1     |         a   |
-| 2     |         a   |
-| 3     |         a   |
-| 4     |         a   |
-| 5     |         a   |
-| 6     |         a   |
+- Bus width: 8bit
+- Slave address width: 7bit
 
 
 ## Verification
-
-| Test name
-|
-|
-|
-|
-|
+Tests:
+- Simple R/W
+- Two subsequent reads
+- Two subsequent writes
+- Invalid slave address
+- Asynchronous reset
+- Communication interrupt
