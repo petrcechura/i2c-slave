@@ -1,46 +1,94 @@
 # i2c-slave
-This repository holds simple implementation of 7bit I2C slave.
+
+A simple, generic **7-bit I²C slave** implementation with a register-based interface and UVM verification environment.
+
 > [!WARNING]
-> This repository is under development and this README now serves for notes rather than for description.
-Features:
-- Register-based interface for easy implementation into system
-- Classic 8bit bus width, with 7bit slave address
-- UVM-based verification
-- Clock stretching **not implemented yet**
+> **This repository is currently under development.**
+>
+> The README is currently used partly as development notes and may not yet fully describe the implemented functionality.
 
-For further low-level details about I2C communication, please read [related spec](https://www.nxp.com/docs/en/user-guide/UM10204.pdf).
+## Features
 
-## Usage
-`i2c-slave` aims to be generic and simple to use in your design, exposing its register interface only while handling all the low-level and link-layer (slave address + reg address + data ...) communication. It's up to user to provide registers outside of the slave and define their behaviour when written to or read from. 
+* **7-bit I²C slave address**
+* **8-bit register/data interface**
+* Register-based interface for easy integration into larger systems
+* Handles I²C link-layer communication internally
+* **UVM-based verification environment**
+* Clock stretching — **not implemented yet**
 
-<img src="pics/i2c_slave_regs.png" width="900" height="300" alt="Visual view of i2c slave used in real design">
+For low-level details of the I²C protocol, see the [I²C-bus specification (UM10204)](https://www.nxp.com/docs/en/user-guide/UM10204.pdf).
 
-Top-level design follows common I2C link layer pattern, thus expecting:
+---
 
-<img src="pics/i2c_link_layer.png" width="900" height="300" alt="Link layer I2C communication view">
+## Overview & Usage
 
+`i2c-slave` is designed to be a **generic and simple-to-integrate I²C slave**.
 
-This behaviour is embedded inside the `i2c-slave` itself, enhancing lower-level module `i2c_slave_core.sv`, which processes single bits only which not interpreting them. Thus for modifying the link layer pattern, one may reuse the lower-level module. 
+The module handles the low-level I²C communication as well as the link-layer protocol, including:
+
+* slave address detection
+* register address handling
+* read/write direction
+* data transfer
+* ACK/NACK handling
+
+The user-facing interface exposes only the register interface. The actual registers and their behaviour are implemented by the surrounding system.
+
+### Integration
+
+A typical integration looks like this:
+
+<p align="center">
+  <img src="pics/i2c_slave_regs.png" width="900" alt="I2C slave integrated into a larger design">
+</p>
+
+The `i2c-slave` module therefore acts as an interface between the physical I²C bus and a set of application-specific registers.
+
+### I²C Link Layer
+
+The top-level design follows a common I²C link-layer pattern:
+
+<p align="center">
+  <img src="pics/i2c_link_layer.png" width="900" alt="I²C link-layer communication">
+</p>
+
+This behaviour is implemented inside `i2c-slave` and builds on the lower-level [`i2c_slave_core.sv`](src/i2c_slave_core.sv) module.
+
+`i2c_slave_core.sv` operates on individual bits and does not interpret the higher-level meaning of the received data. This separation makes it possible to reuse the core when implementing a different link-layer protocol or communication pattern.
+
+---
 
 ## Verification
-Verification flow is managed by [open-chip-flow (OCF)](https://github.com/petrcechura/open-chip-flow) with dedicated UVM library and custom (I2C, CLK, ...) agents. 
 
-For running a verification, first clone a repository with all submodules:
-```
-    git clone --recurse-submodules git@github.com:petrcechura/i2c-slave.git
-```
-In root, symbolic link `run.py` is located, which allows to easily run OCF flow from command line. Run `python3 run.py --help` to see available options.
-Example command for running single test is as follows:
-```
-    python3 run.py verif i2c_slave.yaml --test i2c_slave_test_rw
+Verification is managed using [open-chip-flow (OCF)](https://github.com/petrcechura/open-chip-flow), with a dedicated UVM library and custom verification agents for I²C, clocking, and other interfaces.
+
+### Getting the repository
+
+Clone the repository together with its submodules:
+
+```bash
+git clone --recurse-submodules git@github.com:petrcechura/i2c-slave.git
+cd i2c-slave
 ```
 
-TODO
-Tests:
-- Simple R/W
-- Two subsequent reads
-- Two subsequent writes
-- Invalid slave address
-- Valid slave address in non-first byte
-- Asynchronous reset
-- Communication interrupt
+### Running verification
+
+A symbolic link to `run.py` is provided in the repository root.
+
+To see the available OCF options:
+
+```bash
+python3 run.py --help
+```
+
+For example, to run the read/write test:
+
+```bash
+python3 run.py verif i2c_slave.yaml --test i2c_slave_test_rw
+```
+
+## TODO
+
+* [ ] Implement clock stretching
+* [ ] Create verification matrix
+* [ ] Implement all the tests
