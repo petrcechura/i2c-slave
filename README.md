@@ -16,10 +16,9 @@ For further low-level details about I2C communication, please read [related spec
 <img src="pics/i2c_slave_regs.png" width="900" height="300" alt="Visual view of i2c slave used in real design">
 
 Top-level design follows common I2C link layer pattern, thus expecting:
-- 1. byte = device address (8b) + R/W (1b) (1 = write, 0 = read)
-- 2. byte = register address (8b)
-- 3. byte = data (8b)
-- 4. byte = data (8b) (same with 5., 6., ...)
+
+<img src="pics/i2c_link_layer.png" width="900" height="300" alt="Link layer I2C communication view">
+
 
 This behaviour is embedded inside the `i2c-slave` itself, enhancing lower-level module `i2c_slave_core.sv`, which processes single bits only which not interpreting them. Thus for modifying the link layer pattern, one may reuse the lower-level module. 
 
