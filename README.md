@@ -1,12 +1,6 @@
 # i2c-slave
 
 A simple, generic **7-bit I²C slave** implementation with a register-based interface and UVM verification environment.
-
-> [!WARNING]
-> **This repository is currently under development.**
->
-> The README is currently used partly as development notes and may not yet fully describe the implemented functionality.
-
 ## Features
 
 * **7-bit I²C slave address**
