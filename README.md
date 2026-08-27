@@ -13,7 +13,7 @@ For further low-level details about I2C communication, please read [related spec
 ## Usage
 `i2c-slave` aims to be generic and simple to use in your design, exposing its register interface only while handling all the low-level and link-layer (slave address + reg address + data ...) communication. It's up to user to provide registers outside of the slave and define their behaviour when written to or read from. 
 
-<img src="pics/i2c_slave_regs.png" width="700" height="150" alt="Visual view of i2c slave used in real design">
+<img src="pics/i2c_slave_regs.png" width="900" height="300" alt="Visual view of i2c slave used in real design">
 
 Top-level design follows common I2C link layer pattern, thus expecting:
 - 1. byte = device address (8b) + R/W (1b) (1 = write, 0 = read)
